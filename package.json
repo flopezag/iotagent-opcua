@@ -45,7 +45,7 @@
     "express": "^4.16.3",
     "handlebars": "^4.3.0",
     "http": "0.0.0",
-    "iotagent-node-lib": "https://github.com/telefonicaid/iotagent-node-lib.git",
+    "iotagent-node-lib": "git://github.com/flopezag/iotagent-node-lib.git#feature/cluster-support",
     "jison": "0.4.17",
     "logops": "^1.0.0",
     "mongoose": "4.13.17",

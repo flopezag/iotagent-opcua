@@ -11,8 +11,10 @@ module.exports = {
         var async = require('async');
         var opcua = require('node-opcua');
         var NodeCrawler = opcua.NodeCrawler;
+
         // iotagent-node-lib dependencies
         var iotAgentLib = require('iotagent-node-lib');
+        var iotAgent = require('./iotagent-opcua');
         var userIdentity = null; // anonymous
         var request = require('request');
         var cfc = require('./../cleanForbiddenCharacters');
@@ -238,9 +240,8 @@ module.exports = {
                         subscription.publishEngine.nbPendingPublishRequests +
                         '';
                     logger.debug(logContext, keepAliveString.gray);
-
                     /*
-					iotAgentLib.retrieveDevice(context.id, null, function(error, device) {
+                    iotAgentLib.retrieveDevice(context.id, null, function(error, device) {
 						if(error){
 							subscription.terminate();
 						};
@@ -296,7 +297,7 @@ module.exports = {
                         logger.info(logContext, 'started monitoring: ' + monItem.itemToMonitor.nodeId.toString());
 
                         // Collect all monitoring
-                        if (devicesSubs[context.id] == undefined) {
+                        if (devicesSubs[context.id] === undefined) {
                             devicesSubs[context.id] = [];
                         }
 
@@ -308,15 +309,15 @@ module.exports = {
 
                         // TODO: Be aware that with the new version you have to change something here
                         var variableValue = null;
-                        if (dataValue.value && dataValue.value != null) {
+                        if (dataValue.value) {
                             variableValue = dataValue.value.value || null;
-                            if (dataValue.value.value == 0 || dataValue.value.value == false) {
+                            if (dataValue.value.value === 0 || dataValue.value.value === false) {
                                 variableValue = dataValue.value.value;
                             }
                         }
 
                         variableValue = cfc.cleanForbiddenCharacters(variableValue);
-                        if (variableValue == null) {
+                        if (variableValue === null) {
                             logger.debug('ON CHANGED DO NOTHING');
                         } else {
                             logger.info(
@@ -395,6 +396,20 @@ module.exports = {
                 // initialize client connection to the OCB
                 function(callback) {
                     // This also creates the device registry
+                    /*
+                    iotAgent.start(config, function (err) {
+                        if (err) {
+                            logger.error(logContext, 'There was an error activating the Agent: ' + err.message);
+                            rSfN.removeSuffixFromName.exit(1);
+                        } else {
+                            logger.info(logContext, 'NotificationHandler attached to ContextBroker');
+                            iotAgentLib.setNotificationHandler(notificationHandler);
+                            logger.info(logContext, 'OPC-UA IoT Agent started');
+                        }
+                        callback();
+                    });
+                    */
+
                     iotAgentLib.activate(config, function(err) {
                         if (err) {
                             logger.error(logContext, 'There was an error activating the Agent: ' + err.message);
@@ -528,7 +543,7 @@ module.exports = {
                 function(callback) {
                     // Creating group always
 
-                    if (config.deviceRegistry.type == 'mongodb') {
+                    if (config.deviceRegistry.type === 'mongodb') {
                         mG.mongoGroup(config);
                         request(optionsCreation, function(error, response, body) {
                             if (error) {
@@ -745,7 +760,7 @@ module.exports = {
                             // });
                             // the_subscription.terminate();
                         }, timeout);
-                    } else if (timeout == -1) {
+                    } else if (timeout === -1) {
                         //  Infinite activity
                         // NODE1
                         // logger.info(logContext, 'NO Timeout set!!!'.bold.cyan);
@@ -822,7 +837,7 @@ module.exports = {
                             function(attribute, callback2) {
                                 if (attribute === mapping.ocb_id) {
                                     the_session.readVariableValue(mapping.opcua_id, function(err, dataValue) {
-                                        if (dataValue.value == null) return;
+                                        if (dataValue.value === null) return;
                                         logger.info(logContext, 'dataValue.value.value=' + dataValue.value.value);
                                         if (!err) {
                                             logger.info(logContext, ' read variable % = ', dataValue.toString());
@@ -865,7 +880,7 @@ module.exports = {
                         commands.list(config.service, config.subservice, context.id, function(error, commandList) {
                             count += commandList.count;
                             commandListAllDevices.push.apply(commandListAllDevices, commandList.commands);
-                            if (i == len) callback();
+                            if (i === len) callback();
                         });
                     }
                 },
@@ -1041,13 +1056,13 @@ module.exports = {
             var deviceExists = false;
 
             for (var dev in devices) {
-                if (dev == device.id) {
+                if (dev === device.id) {
                     deviceExists = true;
                     break;
                 }
             }
 
-            if (deviceExists == false) {
+            if (deviceExists === false) {
                 executed = true;
                 // Here only if device added with successfully
 
@@ -1199,7 +1214,7 @@ module.exports = {
             var deviceMappings = [];
 
             // Handling ACTIVE attributes
-            if (device.active != undefined) {
+            if (device.active !== undefined) {
                 device.active.forEach(function(attribute, index) {
                     var mapping = {};
 
@@ -1228,7 +1243,7 @@ module.exports = {
                                 console.log(JSON.stringify(response));
                             });
                             */
-                            if (result.statusCode == opcua.StatusCodes.Good) {
+                            if (result.statusCode === opcua.StatusCodes.Good) {
                                 mapping.ocb_id = attribute.name;
                                 mapping.opcua_id = attribute.object_id;
                                 mapping.object_id = null;
@@ -1238,7 +1253,7 @@ module.exports = {
                                 removeOPCUANodeFromDevice(attribute.object_id, 'active', device);
                             }
 
-                            if (index == device.active.length - 1) {
+                            if (index === device.active.length - 1) {
                                 deviceMappings.forEach(function(mapping) {
                                     var context = {};
                                     context.id = device.id;
@@ -1283,7 +1298,7 @@ module.exports = {
                                         let result = results[0];
                                         console.log('@@@ COMMAND RESULTS' + new Date().getTime());
 
-                                        if (result.statusCode == opcua.StatusCodes.Good) {
+                                        if (result.statusCode === opcua.StatusCodes.Good) {
                                             var mapping = {};
                                             async.series([
                                                 function(callback2) {
@@ -1327,7 +1342,7 @@ module.exports = {
                                         }
                                     }
 
-                                    if (index == device.commands.length - 1) {
+                                    if (index === device.commands.length - 1) {
                                         callback();
                                     }
                                 });
@@ -1349,7 +1364,7 @@ module.exports = {
                                         let result = results[0];
                                         console.log('@@@ BROWSE RESULT' + new Date().getTime());
 
-                                        if (result.statusCode == opcua.StatusCodes.Good) {
+                                        if (result.statusCode === opcua.StatusCodes.Good) {
                                             mapping.ocb_id = lazy.name;
                                             mapping.opcua_id = lazy.object_id;
 

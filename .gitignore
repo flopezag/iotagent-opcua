@@ -3,3 +3,5 @@ node_modules/
 GITIGNORE
 testCommands/NOTES
 BUILD-INSTRUCTIONS
+.idea
+package-lock.json

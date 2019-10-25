@@ -29,14 +29,14 @@ This project is part of [FIWARE](https://www.fiware.org/). For more information 
 [FIWARE Catalogue entry for the IoT Agents](https://github.com/Fiware/catalogue/tree/master/iot-agents).
 
 | :books: [Documentation](https://iotagent-opcua.rtfd.io) | :whale: [Docker Hub](https://hub.docker.com/r/iotagent4fiware/iotagent-opcua) | :dart: [Roadmap](https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/master/roadmap.md) |
-| ------------------------------------------------------- | ------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------- |
+| ------------------------------------------------------- | ----------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
 
 
 ## Contents
 
 -   [Background](#background)
--   [Install](#install)
-    -   [Docker install](docker-install-recommended)
+-   [Install](#getting-started---install)
+    -   [Docker install](#docker-install---recommended)
         -   [How to build a Docker Image](#how-to-build-a-docker-image)
     -   [NPM Install](#npm-install)
 -   [Usage](#usage)
@@ -68,17 +68,19 @@ We suggest using a **Docker-first** approach in order to avoid issues related to
 Moreover, using this approach you will be provided with all the needed component: OCB, Mongo instances and a sample
 OPC-UA server
 
-A step-by-step tutorial is available [here](https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/master/docs/opc_ua_agent_tutorial.md)
+A step-by-step tutorial is available
+[here](https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/master/docs/opc_ua_agent_tutorial.md)
 
 #### How to build a Docker Image
 
-[Here](https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/master/docs/docker_readme.md) you find the instructions on how to build a Docker Image for the Agent
+[Here](https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/master/docs/docker_readme.md) you
+find the instructions on how to build a Docker Image for the Agent
 
 ### NPM Install
 
 Before launching the Agent you must install Orion Context Broker and a OPC UA Server. After that you must tell the Agent
-how to interact with these components by using config.properties file.
-Once configuration is complete you can execute these commands to run the Agent.
+how to interact with these components by using config.properties file. Once configuration is complete you can execute
+these commands to run the Agent.
 
 ```console
 $ npm install
